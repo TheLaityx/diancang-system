@@ -1,0 +1,257 @@
+<!--pages/index/index.wxml - 现代化UI重设计-->
+<view class="page-container">
+
+  <!-- ===== 顶部导航栏 ===== -->
+  <view class="top-nav">
+    <view class="nav-left">
+      <view class="store-info">
+        <text class="store-name">点餐</text>
+        <view class="open-badge">营业中</view>
+      </view>
+    </view>
+    <view class="nav-right">
+      <!-- 桌号芯片：始终显示，点击可选桌 -->
+      <view class="table-chip" bindtap="showTablePicker">
+        <view class="icon-table-chip">桌</view>
+        <text class="table-chip-no" wx:if="{{tableNo}}">{{tableNo}} 号桌</text>
+        <text class="table-chip-no" wx:if="{{!tableNo}}">选桌</text>
+      </view>
+      <!-- 扫一扫芯片 -->
+      <view class="scan-chip" bindtap="scanQrCode">
+        <view class="icon-scan-v2">
+          <view class="scan-v2-corner scan-v2-tl"></view>
+          <view class="scan-v2-corner scan-v2-tr"></view>
+          <view class="scan-v2-corner scan-v2-bl"></view>
+          <view class="scan-v2-corner scan-v2-br"></view>
+          <view class="scan-v2-midline"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== 可滚动内容区 ===== -->
+  <scroll-view 
+    class="main-scroll" 
+    scroll-y 
+    refresher-enabled
+    refresher-triggered="{{refreshing}}"
+    bindrefresherrefresh="onRefresh"
+    bindscrolltolower="onLoadMore"
+  >
+
+    <!-- ===== 搜索栏 ===== -->
+    <view class="search-section">
+      <view class="search-bar-modern">
+        <view class="icon-search">
+          <view class="search-circle"></view>
+          <view class="search-handle"></view>
+        </view>
+        <input 
+          class="search-input-modern" 
+          placeholder="搜索想吃的菜品" 
+          placeholder-class="search-placeholder"
+          bindinput="onSearchInput"
+          bindconfirm="onSearch"
+        />
+        <view class="search-confirm-btn" wx:if="{{searchKeyword}}" bindtap="onSearch">
+          <text>搜索</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- ===== 快捷分类图标区 ===== -->
+    <view class="quick-cats">
+      <view class="quick-cat-item {{currentCategory === '' ? 'active' : ''}}" bindtap="onCategoryChange" data-category="">
+        <view class="qcat-icon-wrap">🍱</view>
+        <text class="qcat-name">全部</text>
+      </view>
+      <block wx:for="{{categories}}" wx:key="_id">
+        <view class="quick-cat-item {{currentCategory === item._id ? 'active' : ''}}" bindtap="onCategoryChange" data-category="{{item._id}}">
+          <view class="qcat-icon-wrap">
+            <text wx:if="{{item.name === '热菜'}}">🍲</text>
+            <text wx:elif="{{item.name === '凉菜'}}">🥗</text>
+            <text wx:elif="{{item.name === '主食'}}">🍚</text>
+            <text wx:elif="{{item.name === '汤类'}}">🍵</text>
+            <text wx:elif="{{item.name === '饮品'}}">🥤</text>
+            <text wx:else>🍽️</text>
+          </view>
+          <text class="qcat-name">{{item.name}}</text>
+        </view>
+      </block>
+    </view>
+
+    <!-- ===== 分类Tab & 菜品列表 ===== -->
+    <view class="dishes-container">
+      <view class="section-header">
+        <text class="section-title">
+          <text wx:if="{{currentCategory === ''}}">今日菜单</text>
+          <text wx:else>{{categories[0].name}}</text>
+        </text>
+        <text class="section-count">{{dishes.length}}款</text>
+      </view>
+
+      <!-- 菜品网格 -->
+      <view class="dish-grid-new">
+        <block wx:for="{{dishes}}" wx:key="_id">
+          <view class="dish-card-new" bindtap="goToDish" data-id="{{item._id}}">
+            <!-- 标签 -->
+            <view class="dish-tag-wrap" wx:if="{{item.sales > 100}}">
+              <view class="dish-tag hot-tag">热销</view>
+            </view>
+            <view class="dish-tag-wrap" wx:elif="{{item.stock !== -1 && item.stock < 10 && item.stock > 0}}">
+              <view class="dish-tag low-tag">仅剩{{item.stock}}</view>
+            </view>
+
+            <!-- 图片区 -->
+            <view class="dish-img-wrap">
+              <image class="dish-img" wx:if="{{item.image}}" src="{{item.image}}" mode="aspectFill" lazy-load></image>
+              <view class="dish-img-placeholder" wx:else>
+                <view class="dish-placeholder-icon">
+                  <text wx:if="{{item.category_id == 1}}">热</text>
+                  <text wx:elif="{{item.category_id == 2}}">凉</text>
+                  <text wx:elif="{{item.category_id == 3}}">汤</text>
+                  <text wx:elif="{{item.category_id == 4}}">主</text>
+                  <text wx:elif="{{item.category_id == 5}}">饮</text>
+                  <text wx:else>餐</text>
+                </view>
+              </view>
+            </view>
+
+            <!-- 信息区 -->
+            <view class="dish-info-new">
+              <text class="dish-name-new">{{item.name}}</text>
+              <text class="dish-desc-new" wx:if="{{item.description}}">{{item.description}}</text>
+              <view class="dish-sales-row" wx:if="{{item.sales > 0}}">
+                <text class="dish-sales-text">月售{{item.sales}}</text>
+              </view>
+              <view class="dish-bottom-new">
+                <view class="dish-price-new">
+                  <text class="price-sym">¥</text>
+                  <text class="price-num">{{item.price || '0'}}</text>
+                </view>
+                <!-- 数量控制 -->
+                <view class="qty-control" wx:if="{{item.inCart}}" catchtap="stopProp">
+                  <view class="qty-minus" catchtap="decreaseCartItem" data-key="{{item.cartKey}}">
+                    <text>−</text>
+                  </view>
+                  <text class="qty-num">{{item.cartQuantity}}</text>
+                  <view class="qty-plus" catchtap="increaseCartItem" data-key="{{item.cartKey}}">
+                    <text>+</text>
+                  </view>
+                </view>
+                <view class="add-cart-btn" wx:else catchtap="addToCart" data-dish="{{item}}">
+                  <text class="add-plus">+</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </block>
+      </view>
+
+      <!-- 加载状态 -->
+      <view class="load-state" wx:if="{{loading}}">
+        <view class="load-dots">
+          <view class="dot dot1"></view>
+          <view class="dot dot2"></view>
+          <view class="dot dot3"></view>
+        </view>
+      </view>
+      <view class="no-more-line" wx:if="{{!hasMore && dishes.length > 0}}">
+        <view class="no-more-inner">
+          <view class="no-more-line-l"></view>
+          <text class="no-more-text">已到底部</text>
+          <view class="no-more-line-r"></view>
+        </view>
+      </view>
+      <view class="empty-state" wx:if="{{dishes.length === 0 && !loading}}">
+        <view class="empty-icon">餐</view>
+        <text class="empty-tip">暂无符合的菜品</text>
+      </view>
+    </view>
+
+  </scroll-view><!-- /main-scroll -->
+
+  <!-- ===== 购物车悬浮条（始终显示） ===== -->
+  <view class="cart-float-bar {{showCart ? 'hide-bar' : ''}}" bindtap="openCartPanel">
+    <view class="cart-float-left">
+      <view class="cart-float-icon">
+        <view class="icon-cart">
+          <view class="cart-body"></view>
+          <view class="cart-wheel cart-wheel-left"></view>
+          <view class="cart-wheel cart-wheel-right"></view>
+        </view>
+        <!-- 有商品才显示红色数量角标 -->
+        <view class="cart-float-badge" wx:if="{{cartCount > 0}}">{{cartCount}}</view>
+      </view>
+      <text class="cart-float-count" wx:if="{{cartCount > 0}}">已选 {{cartCount}} 件</text>
+      <text class="cart-float-count empty-hint" wx:else>点击点餐</text>
+    </view>
+    <view class="cart-float-right">
+      <text class="cart-float-price" wx:if="{{cartCount > 0}}">¥{{cartTotal}}</text>
+      <view class="cart-settle-btn {{cartCount > 0 ? '' : 'cart-settle-empty'}}">
+        <text wx:if="{{cartCount > 0}}">去结算</text>
+        <text wx:else>购物车</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== 购物车弹窗 ===== -->
+  <view class="cart-overlay {{showCart ? 'show' : ''}}" bindtap="hideCartPanel"></view>
+  <view class="cart-panel {{showCart ? 'show' : ''}}">
+    <view class="cart-panel-drag"></view>
+    <view class="cart-panel-header">
+      <view class="cart-header-left">
+        <text class="cart-panel-title">购物车</text>
+        <text class="cart-item-count">{{cartCount}}件</text>
+      </view>
+      <text class="cart-panel-clear" bindtap="clearCart">清空</text>
+    </view>
+    <scroll-view class="cart-panel-list" scroll-y>
+      <view class="cart-item-row" wx:for="{{cart}}" wx:key="key">
+        <view class="cart-item-img-wrap">
+          <image class="cart-item-img" wx:if="{{item.image}}" src="{{item.image}}" mode="aspectFill"></image>
+          <view class="cart-item-img-ph" wx:else>
+            <text class="cart-ph-text">餐</text>
+          </view>
+        </view>
+        <view class="cart-item-info">
+          <text class="cart-item-name">{{item.name}}</text>
+          <text class="cart-item-price-tag">¥{{item.price ? Number(item.price).toFixed(2) : '0.00'}}</text>
+        </view>
+        <view class="cart-qty-wrap">
+          <text class="cart-qty-btn minus" catchtap="decreaseCartItem" data-key="{{item.key}}">−</text>
+          <text class="cart-qty-val">{{item.quantity}}</text>
+          <text class="cart-qty-btn plus" catchtap="increaseCartItem" data-key="{{item.key}}">+</text>
+        </view>
+      </view>
+    </scroll-view>
+    <view class="cart-panel-footer">
+      <view class="cart-footer-total">
+        <text class="cart-total-label">合计</text>
+        <text class="cart-total-price">¥{{cartTotal}}</text>
+      </view>
+      <view class="cart-go-pay" bindtap="goToPayment">
+        <text>去结算 ({{cartCount}})</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== 选桌弹窗 ===== -->
+  <view class="table-modal" wx:if="{{showTableModal}}">
+    <view class="table-modal-mask" bindtap="closeTableModal"></view>
+    <view class="table-modal-box">
+      <view class="table-modal-title">选择桌号</view>
+      <view class="table-grid">
+        <view
+          class="table-btn {{tableNo == item ? 'table-btn-active' : ''}}"
+          wx:for="{{tableOptions}}"
+          wx:key="*this"
+          bindtap="selectTable"
+          data-no="{{item}}"
+        >{{item}} 号</view>
+      </view>
+      <view class="table-modal-cancel" bindtap="closeTableModal">取消</view>
+    </view>
+  </view>
+
+</view>

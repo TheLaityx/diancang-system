@@ -1,0 +1,39 @@
+<!--pages/merchant-dish-edit/merchant-dish-edit.wxml-->
+<view class="edit-page">
+  <view class="form-section">
+    <view class="form-item">
+      <text class="form-label">菜品图片</text>
+      <view class="image-upload" bindtap="chooseImage">
+        <image class="preview-image" src="{{image || '/images/default-dish.png'}}" mode="aspectFill" wx:if="{{image}}"></image>
+        <view class="upload-placeholder" wx:else>
+          <text class="upload-icon">+</text>
+          <text class="upload-text">点击上传图片</text>
+        </view>
+      </view>
+    </view>
+    
+    <view class="form-item">
+      <text class="form-label">菜品名称</text>
+      <input class="form-input" placeholder="请输入菜品名称" bindinput="onNameInput" value="{{name}}"/>
+    </view>
+    
+    <view class="form-item">
+      <text class="form-label">价格（元）</text>
+      <input class="form-input" type="digit" placeholder="请输入价格" bindinput="onPriceInput" value="{{price}}"/>
+    </view>
+    
+    <view class="form-item">
+      <text class="form-label">库存（-1为无限）</text>
+      <input class="form-input" type="number" placeholder="请输入库存数量" bindinput="onStockInput" value="{{stock}}"/>
+    </view>
+    
+    <view class="form-item">
+      <text class="form-label">菜品描述</text>
+      <textarea class="form-textarea" placeholder="请输入菜品描述" bindinput="onDescInput" value="{{description}}"/>
+    </view>
+  </view>
+  
+  <view class="submit-btn" bindtap="submit">
+    <text class="btn-text">保存</text>
+  </view>
+</view>

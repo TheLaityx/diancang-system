@@ -1,0 +1,95 @@
+/* pages/refund-list/refund-list.wxss */
+
+.refund-list-page {
+  height: 100vh;
+  background: #F5F5F5;
+  display: flex;
+  flex-direction: column;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #999;
+}
+
+.refund-list {
+  flex: 1;
+  padding: 12px;
+}
+
+.refund-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.refund-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.order-no {
+  font-size: 14px;
+  color: #666;
+}
+
+.refund-status {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+.status-0 {
+  background: #FDF6EC;
+  color: #E6A23C;
+}
+
+.status-1 {
+  background: #E1F3D8;
+  color: #67C23A;
+}
+
+.status-2 {
+  background: #FEF0F0;
+  color: #F56C6C;
+}
+
+.refund-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.refund-reason {
+  flex: 1;
+  font-size: 14px;
+  color: #333;
+}
+
+.refund-amount {
+  font-size: 18px;
+  font-weight: 600;
+  color: #F56C6C;
+}
+
+.refund-time {
+  font-size: 12px;
+  color: #999;
+}
+
+.empty {
+  padding: 60px 0;
+  text-align: center;
+}
+
+.empty-text {
+  font-size: 14px;
+  color: #999;
+}

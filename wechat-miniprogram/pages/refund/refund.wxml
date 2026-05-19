@@ -1,0 +1,35 @@
+<!--pages/refund/refund.wxml-->
+<view class="refund-page">
+  <view class="refund-form">
+    <view class="form-item">
+      <text class="form-label">退款原因</text>
+    </view>
+    <view class="reason-list">
+      <view 
+        class="reason-item {{selectedReason === index ? 'active' : ''}}"
+        wx:for="{{reasons}}"
+        wx:key="index"
+        bindtap="selectReason"
+        data-index="{{index}}"
+      >
+        <text>{{item}}</text>
+        <view class="check-icon" wx:if="{{selectedReason === index}}">✓</view>
+      </view>
+    </view>
+    
+    <view class="form-item">
+      <text class="form-label">详细说明</text>
+      <textarea 
+        class="reason-input" 
+        placeholder="请输入详细说明（选填）" 
+        placeholder-class="placeholder"
+        bindinput="onReasonInput"
+        value="{{detail}}"
+      />
+    </view>
+  </view>
+
+  <view class="submit-btn" bindtap="submitRefund">
+    <text class="btn-text">提交申请</text>
+  </view>
+</view>

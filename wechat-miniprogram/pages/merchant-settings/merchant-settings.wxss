@@ -1,0 +1,53 @@
+/* pages/merchant-settings/merchant-settings.wxss */
+
+.settings-page {
+  min-height: 100vh;
+  background: #F5F5F5;
+  padding: 16px;
+}
+
+.settings-section {
+  background: #fff;
+  border-radius: 12px;
+}
+
+.settings-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid #F5F5F5;
+}
+
+.settings-item:last-child {
+  border-bottom: none;
+}
+
+.settings-text {
+  font-size: 15px;
+  color: #333;
+}
+
+.arrow-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.logout-section {
+  margin-top: 40px;
+  padding: 0 16px;
+}
+
+.logout-btn {
+  height: 50px;
+  background: #fff;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logout-btn text {
+  font-size: 16px;
+  color: #F56C6C;
+}

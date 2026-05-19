@@ -1,0 +1,92 @@
+<!--pages/dish/dish.wxml-->
+<view class="dish-page" wx:if="{{dish}}">
+  <view class="dish-image-placeholder" wx:if="{{!dish.image}}">
+    <text class="dish-image-text">{{dish.name}}</text>
+  </view>
+  <image class="dish-image" wx:if="{{dish.image}}" src="{{dish.image}}" mode="aspectFill"></image>
+   
+  <view class="dish-content">
+    <view class="dish-header">
+      <text class="dish-name">{{dish.name}}</text>
+      <view class="dish-price">
+        <text class="price-symbol">¥</text>
+        <text class="price-value">{{dish.price ? Number(dish.price).toFixed(2) : '0.00'}}</text>
+      </view>
+    </view>
+    
+    <view class="dish-desc" wx:if="{{dish.description}}">
+      <text>{{dish.description}}</text>
+    </view>
+    
+    <view class="dish-info">
+      <text class="info-item">月售: {{dish.sales || 0}}</text>
+      <text class="info-item" wx:if="{{dish.stock !== -1}}">库存: {{dish.stock}}</text>
+    </view>
+  </view>
+
+  <!-- 评价 section -->
+  <view class="review-section" wx:if="{{reviews.length > 0 || canReview}}">
+    <view class="review-header">
+      <text class="review-title">评价</text>
+    </view>
+    <view class="review-list">
+      <view class="review-item" wx:for="{{reviews}}" wx:key="_id">
+        <view class="review-user">
+          <text class="review-user-name">{{item.userId}}</text>
+          <view class="review-rating">
+            <text wx:for="{{5}}" wx:for-item="star" wx:key="star" wx:for-index="i">★</text>
+          </view>
+        </view>
+        <text class="review-content">{{item.content}}</text>
+        <text class="review-time">{{item.createTime}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 写评价按钮 -->
+  <view class="review-btn-wrap" wx:if="{{canReview}}" bindtap="showReviewModal">
+    <text class="review-btn-text">写评价</text>
+  </view>
+
+  <!-- 评价弹窗 -->
+  <view class="review-modal" wx:if="{{showReviewModal}}">
+    <view class="review-modal-mask" bindtap="hideReviewModal"></view>
+    <view class="review-modal-content">
+      <view class="review-modal-header">
+        <text class="review-modal-title">写评价</text>
+        <text class="review-modal-close" bindtap="hideReviewModal">✕</text>
+      </view>
+      <view class="review-rating-wrap">
+        <text class="review-rating-label">评分</text>
+        <view class="review-stars">
+          <text wx:for="{{5}}" wx:for-item="star" wx:for-index="i" wx:key="i" data-rating="{{i+1}}" bindtap="setRating" class="star {{i < reviewRating ? 'active' : ''}}">★</text>
+        </view>
+      </view>
+      <view class="review-input-wrap">
+        <textarea class="review-textarea" placeholder="分享你的用餐体验..." bindinput="onReviewInput" value="{{reviewContent}}"></textarea>
+      </view>
+      <view class="review-submit-btn" bindtap="submitReview">
+        <text class="review-submit-text">提交评价</text>
+      </view>
+    </view>
+  </view>
+  
+  <view class="add-to-cart">
+    <view class="quantity-wrap">
+      <view class="quantity-btn" catchtap="decreaseQuantity">
+        <text>-</text>
+      </view>
+      <text class="quantity-value">{{quantity}}</text>
+      <view class="quantity-btn" catchtap="increaseQuantity">
+        <text>+</text>
+      </view>
+    </view>
+    <view class="add-btn" bindtap="addToCart">
+      <text class="btn-text">加入购物车 ¥{{totalPrice}}</text>
+    </view>
+  </view>
+</view>
+
+<view class="loading-wrap" wx:if="{{!dish}}">
+  <text>加载中...</text>
+</view>

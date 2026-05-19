@@ -1,0 +1,47 @@
+<!--pages/user/user.wxml-->
+<view class="user-page">
+  <!-- 用户信息 -->
+  <view class="user-header">
+    <view class="user-info" bindtap="login">
+      <view class="avatar-placeholder">
+        <text class="avatar-text">{{userInfo.nickName ? userInfo.nickName[0] : '我'}}</text>
+      </view>
+      <view class="user-detail">
+        <text class="nickname">{{userInfo.nickName || '点击授权登录'}}</text>
+        <text class="user-hint" wx:if="{{!userInfo.nickName}}">登录后享受更多服务</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="menu-section">
+    <view class="menu-item" bindtap="goToOrders">
+      <text class="menu-text">我的订单</text>
+      <text class="arrow-text">></text>
+    </view>
+    <view class="menu-item" bindtap="contactMerchant">
+      <text class="menu-text">联系商家</text>
+      <text class="arrow-text">></text>
+    </view>
+  </view>
+
+  <!-- 商家入口 -->
+  <view class="merchant-entry" wx:if="{{!isMerchant}}" bindtap="goToMerchantLogin">
+    <text class="merchant-name">商家管理</text>
+    <text class="arrow-text">></text>
+  </view>
+  <view class="merchant-entry" wx:if="{{isMerchant}}" bindtap="goToMerchant">
+    <text class="merchant-name">商家管理</text>
+    <text class="arrow-text">></text>
+  </view>
+
+  <!-- 退出登录 -->
+  <view class="logout-btn" wx:if="{{isMerchant}}" bindtap="logout">
+    <text>退出登录</text>
+  </view>
+
+  <!-- 清空订单记录（仅调试用） -->
+  <view class="logout-btn clear-orders-btn" bindtap="clearOrderHistory">
+    <text>清空我的订单记录</text>
+  </view>
+</view>

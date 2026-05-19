@@ -1,0 +1,89 @@
+<!--pages/merchant/merchant.wxml-->
+<view class="merchant-page">
+  <!-- 头部 -->
+  <view class="merchant-header">
+    <view class="header-info">
+      <text class="shop-icon-emoji">☕</text>
+      <view class="shop-detail">
+        <text class="shop-name">{{merchantInfo.name || '扫码点餐商家'}}</text>
+        <text class="shop-status">营业中</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 快捷操作 -->
+  <view class="quick-actions">
+    <view class="action-card" bindtap="goToOrders">
+      <view class="action-icon-wrap pending">
+        <text class="action-icon-emoji">📋</text>
+        <view class="action-badge" wx:if="{{pendingCount > 0}}">{{pendingCount}}</view>
+      </view>
+      <text class="action-text">订单管理</text>
+    </view>
+    <view class="action-card" bindtap="goToDishes">
+      <view class="action-icon-wrap dish">
+        <text class="action-icon-emoji">🍜</text>
+      </view>
+      <text class="action-text">菜品管理</text>
+    </view>
+    <view class="action-card" bindtap="goToStats">
+      <view class="action-icon-wrap stats">
+        <text class="action-icon-emoji">📊</text>
+      </view>
+      <text class="action-text">数据统计</text>
+    </view>
+  </view>
+
+  <!-- 今日数据 -->
+  <view class="today-stats">
+    <view class="stats-title">今日数据</view>
+    <view class="stats-grid">
+      <view class="stats-item">
+        <text class="stats-value">{{stats.todayOrders}}</text>
+        <text class="stats-label">订单数</text>
+      </view>
+      <view class="stats-item">
+        <text class="stats-value">¥{{stats.todayRevenue}}</text>
+        <text class="stats-label">营业额</text>
+      </view>
+      <view class="stats-item">
+        <text class="stats-value">{{stats.completedOrders}}</text>
+        <text class="stats-label">已完成</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 待处理订单 -->
+  <view class="pending-section" wx:if="{{pendingOrders.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">待处理订单</text>
+      <text class="more-link" bindtap="goToOrders">更多 ></text>
+    </view>
+    <scroll-view class="pending-list" scroll-x>
+      <view class="pending-card" wx:for="{{pendingOrders}}" wx:key="_id" bindtap="viewOrder" data-id="{{item._id}}">
+        <view class="pending-header">
+          <text class="take-no">{{item.takeNo}}</text>
+          <text class="table-no">桌号{{item.tableNo}}</text>
+        </view>
+        <view class="pending-items">
+          <text wx:for="{{item.items}}" wx:for-item="dish" wx:key="index">{{dish.name}} x{{dish.quantity}}{{index < item.items.length - 1 ? ', ' : ''}}</text>
+        </view>
+        <view class="pending-footer">
+          <text class="pending-amount">¥{{item.totalAmount ? Number(item.totalAmount).toFixed(2) : '0.00'}}</text>
+          <view class="pending-actions">
+            <view class="action-btn accept" catchtap="acceptOrder" data-id="{{item._id}}">接单</view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 设置入口 -->
+  <view class="settings-section">
+    <view class="settings-item" bindtap="goToSettings">
+      <text class="settings-icon-emoji">⚙️</text>
+      <text class="settings-text">系统设置</text>
+      <text class="arrow-icon-emoji">›</text>
+    </view>
+  </view>
+</view>

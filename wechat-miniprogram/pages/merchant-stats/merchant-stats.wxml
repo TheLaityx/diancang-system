@@ -1,0 +1,55 @@
+<!--pages/merchant-stats/merchant-stats.wxml-->
+<view class="stats-page">
+  <!-- 今日概览 -->
+  <view class="today-section">
+    <view class="section-title">今日概览</view>
+    <view class="stats-grid">
+      <view class="stats-card">
+        <text class="stats-value">{{stats.todayOrders}}</text>
+        <text class="stats-label">今日订单</text>
+      </view>
+      <view class="stats-card">
+        <text class="stats-value">¥{{stats.todayRevenue}}</text>
+        <text class="stats-label">今日营收</text>
+      </view>
+      <view class="stats-card">
+        <text class="stats-value">{{stats.completedOrders}}</text>
+        <text class="stats-label">已完成</text>
+      </view>
+      <view class="stats-card">
+        <text class="stats-value">{{stats.refundCount}}</text>
+        <text class="stats-label">退款单数</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 退款统计 -->
+  <view class="refund-section">
+    <view class="section-title">退款统计</view>
+    <view class="stats-grid">
+      <view class="stats-card">
+        <text class="stats-value">{{stats.refundCount}}</text>
+        <text class="stats-label">退款单数</text>
+      </view>
+      <view class="stats-card">
+        <text class="stats-value">¥{{stats.refundAmount}}</text>
+        <text class="stats-label">退款金额</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 菜品销量 -->
+  <view class="dish-section">
+    <view class="section-title">菜品销量排行</view>
+    <view class="dish-list">
+      <view class="dish-item" wx:for="{{topDishes}}" wx:key="_id">
+        <text class="dish-rank">{{index + 1}}</text>
+        <text class="dish-name">{{item.name}}</text>
+        <text class="dish-sales">{{item.sales || 0}}份</text>
+      </view>
+      <view class="empty" wx:if="{{topDishes.length === 0}}">
+        <text>暂无销量数据</text>
+      </view>
+    </view>
+  </view>
+</view>

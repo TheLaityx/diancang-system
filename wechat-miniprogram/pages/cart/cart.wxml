@@ -1,0 +1,65 @@
+<!--pages/cart/cart.wxml-->
+<view class="cart-page">
+  <!-- 头部信息 -->
+  <view class="cart-header">
+    <view class="table-info" wx:if="{{tableNo}}">
+      <text class="table-label">桌号</text>
+      <text class="table-no">{{tableNo}}</text>
+    </view>
+  </view>
+
+  <!-- 购物车为空 -->
+  <view class="cart-empty" wx:if="{{cart.length === 0}}">
+    <image class="empty-icon" src="/images/empty-cart.png" mode="aspectFit"></image>
+    <text class="empty-text">购物车是空的</text>
+    <button class="empty-btn" bindtap="goMenu">去点餐</button>
+  </view>
+
+  <!-- 购物车列表 -->
+  <view class="cart-content" wx:if="{{cart.length > 0}}">
+    <scroll-view class="cart-list" scroll-y>
+      <view class="cart-item" wx:for="{{cart}}" wx:key="key">
+        <image class="item-image" src="{{item.image || '/images/default-dish.png'}}" mode="aspectFill"></image>
+        <view class="item-info">
+          <text class="item-name">{{item.name}}</text>
+          <text class="item-specs" wx:if="{{item.specs}}">{{item.specs}}</text>
+        </view>
+        <view class="item-price">
+          <text class="price-value">¥{{item.price ? Number(item.price).toFixed(2) : '0.00'}}</text>
+        </view>
+        <view class="item-quantity">
+          <view class="quantity-btn minus" catchtap="decreaseQuantity" data-key="{{item.key}}">
+            <text class="quantity-symbol">-</text>
+          </view>
+          <text class="quantity-value">{{item.quantity}}</text>
+          <view class="quantity-btn plus" catchtap="increaseQuantity" data-key="{{item.key}}">
+            <text class="quantity-symbol">+</text>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+
+    <!-- 备注 -->
+    <view class="remark-section">
+      <text class="remark-label">备注</text>
+      <input 
+        class="remark-input" 
+        placeholder="请输入备注信息（可选）" 
+        placeholder-class="remark-placeholder"
+        bindinput="onRemarkInput"
+        value="{{remark}}"
+      />
+    </view>
+  </view>
+
+  <!-- 底部结算栏 -->
+  <view class="cart-footer" wx:if="{{cart.length > 0}}">
+    <view class="footer-left">
+      <text class="total-label">合计</text>
+      <text class="total-value">¥{{totalPrice}}</text>
+    </view>
+    <view class="footer-right" bindtap="goPayment">
+      <text class="settle-btn">结算</text>
+    </view>
+  </view>
+</view>

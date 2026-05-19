@@ -1,0 +1,89 @@
+<!--pages/order-detail/order-detail.wxml-->
+<view class="detail-page">
+  <!-- 订单状态 -->
+  <view class="status-card" style="background: {{order.status == 5 ? '#67C23A' : '#C68D56'}}">
+    <view class="status-header">
+      <text class="status-text" wx:if="{{order.status != 5}}">{{statusText[order.status]}}</text>
+      <text class="status-text" wx:if="{{order.status == 5}}">退款成功</text>
+    </view>
+    <view class="take-info" wx:if="{{order.orderNo || order.takeNo}}">
+      <text class="take-label">订单号</text>
+      <text class="take-no">{{order.orderNo || order.takeNo}}</text>
+    </view>
+  </view>
+
+  <!-- 订单信息 -->
+  <view class="info-section">
+    <view class="section-title">订单信息</view>
+    <view class="info-card">
+      <view class="info-row">
+        <text class="info-label">桌号</text>
+        <text class="info-value">{{order.tableNo || '-'}} 桌</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">订单号</text>
+        <text class="info-value">{{order.orderNo || '-'}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">下单时间</text>
+        <text class="info-value">{{order.createTime || '-'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 菜品清单 -->
+  <view class="items-section">
+    <view class="section-title">菜品清单</view>
+    <view class="items-card">
+      <view class="item-row" wx:for="{{order.items}}" wx:key="index">
+        <view class="item-image-placeholder" wx:if="{{!item.image}}">
+          <text class="item-image-text">{{item.name[0] || '菜'}}</text>
+        </view>
+        <image class="item-image" wx:if="{{item.image}}" src="{{item.image}}" mode="aspectFill"></image>
+        <view class="item-info">
+          <text class="item-name">{{item.name}}</text>
+          <text class="item-specs" wx:if="{{item.specs}}">{{item.specs}}</text>
+        </view>
+        <view class="item-right">
+          <text class="item-quantity">x{{item.quantity}}</text>
+          <text class="item-price">¥{{item.subtotalText || '0.00'}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 备注 -->
+  <view class="remark-section" wx:if="{{order.remark}}">
+    <view class="section-title">备注</view>
+    <view class="remark-card">
+      <text class="remark-text">{{order.remark}}</text>
+    </view>
+  </view>
+
+  <!-- 支付信息 -->
+  <view class="pay-section">
+    <view class="pay-card">
+      <view class="pay-row">
+        <text class="pay-label">菜品金额</text>
+        <text class="pay-value">¥{{order.totalAmountText || '0.00'}}</text>
+      </view>
+      <view class="pay-row total">
+        <text class="pay-label">实付金额</text>
+        <text class="pay-value">¥{{order.totalAmountText || '0.00'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-buttons">
+    <view class="action-btn primary" wx:if="{{order.status === 1}}" bindtap="applyRefund">
+      申请退款
+    </view>
+    <view class="action-btn primary" wx:if="{{order.status === 2}}" bindtap="applyRefund">
+      申请退款
+    </view>
+    <view class="action-btn secondary" bindtap="backToList">
+      返回订单列表
+    </view>
+  </view>
+</view>

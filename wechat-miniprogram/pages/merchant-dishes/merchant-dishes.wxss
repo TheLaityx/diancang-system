@@ -1,0 +1,169 @@
+/* pages/merchant-dishes/merchant-dishes.wxss */
+
+.dishes-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #F5F5F5;
+}
+
+.add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 56px;
+  background: #C68D56;
+  margin: 12px;
+  border-radius: 12px;
+}
+
+.add-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
+.add-text {
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+}
+
+.dishes-list {
+  flex: 1;
+  padding: 0 12px;
+}
+
+.dish-card {
+  display: flex;
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.dish-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  margin-right: 12px;
+}
+
+.dish-image-placeholder {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  margin-right: 12px;
+  background: linear-gradient(135deg, #C68D56 0%, #A67B4B 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dish-image-text {
+  font-size: 24px;
+  color: #fff;
+  font-weight: 600;
+}
+
+.dish-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.dish-name {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.dish-desc {
+  display: block;
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dish-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.dish-price {
+  display: flex;
+  align-items: baseline;
+}
+
+.price-symbol {
+  font-size: 12px;
+  color: #C68D56;
+  font-weight: 600;
+}
+
+.price-value {
+  font-size: 18px;
+  color: #C68D56;
+  font-weight: 700;
+}
+
+.dish-stock {
+  font-size: 12px;
+  color: #666;
+}
+
+.dish-sales {
+  font-size: 12px;
+  color: #999;
+}
+
+.dish-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+}
+
+.action-btn {
+  padding: 6px 12px;
+  border-radius: 14px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.action-btn.online {
+  background: #E1F3D8;
+  color: #67C23A;
+}
+
+.action-btn.offline {
+  background: #FDF6EC;
+  color: #E6A23C;
+}
+
+.action-btn.edit {
+  background: #E6F7FF;
+  color: #409EFF;
+}
+
+.action-btn.delete {
+  background: #FEF0F0;
+  color: #F56C6C;
+}
+
+.empty {
+  padding: 60px 0;
+  text-align: center;
+}
+
+.empty-text {
+  font-size: 14px;
+  color: #999;
+}

@@ -1,0 +1,93 @@
+/* pages/merchant-dish-edit/merchant-dish-edit.wxss */
+
+.edit-page {
+  min-height: 100vh;
+  background: #F5F5F5;
+  padding: 16px;
+}
+
+.form-section {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.form-item {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.image-upload {
+  width: 120px;
+  height: 120px;
+  background: #F5F5F5;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.preview-image {
+  width: 100%;
+  height: 100%;
+}
+
+.upload-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.upload-icon {
+  font-size: 32px;
+  color: #999;
+  line-height: 1;
+}
+
+.upload-text {
+  font-size: 12px;
+  color: #999;
+  margin-top: 4px;
+}
+
+.form-input {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  background: #F5F5F5;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.form-textarea {
+  width: 100%;
+  height: 100px;
+  padding: 12px;
+  background: #F5F5F5;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.submit-btn {
+  margin-top: 24px;
+  height: 50px;
+  background: #C68D56;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-text {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+}

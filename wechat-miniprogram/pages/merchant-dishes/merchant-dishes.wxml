@@ -1,0 +1,46 @@
+<!--pages/merchant-dishes/merchant-dishes.wxml-->
+<view class="dishes-page">
+  <!-- 添加按钮 -->
+  <view class="add-btn" bindtap="addDish">
+    <text class="add-text">+ 添加菜品</text>
+  </view>
+
+  <!-- 菜品列表 -->
+  <scroll-view 
+    class="dishes-list" 
+    scroll-y 
+    refresher-enabled
+    refresher-triggered="{{refreshing}}"
+    bindrefresherrefresh="onRefresh"
+  >
+    <view class="dish-card" wx:for="{{dishes}}" wx:key="_id">
+      <view class="dish-image-placeholder" wx:if="{{!item.image}}">
+        <text class="dish-image-text">{{item.name[0] || '菜'}}</text>
+      </view>
+      <image class="dish-image" wx:if="{{item.image}}" src="{{item.image}}" mode="aspectFill"></image>
+      <view class="dish-info">
+        <text class="dish-name">{{item.name}}</text>
+        <text class="dish-desc" wx:if="{{item.description}}">{{item.description}}</text>
+        <view class="dish-meta">
+          <view class="dish-price">
+            <text class="price-symbol">¥</text>
+            <text class="price-value">{{item.price ? Number(item.price).toFixed(2) : '0.00'}}</text>
+          </view>
+          <text class="dish-stock">库存: {{item.stock === -1 ? '无限' : item.stock}}</text>
+        </view>
+        <view class="dish-sales">销量: {{item.sales || 0}}</view>
+      </view>
+      <view class="dish-actions">
+        <view class="action-btn {{item.status === 1 ? 'offline' : 'online'}}" catchtap="toggleStatus" data-id="{{item._id}}" data-status="{{item.status}}">
+          {{item.status === 1 ? '下架' : '上架'}}
+        </view>
+        <view class="action-btn edit" catchtap="editDish" data-id="{{item._id}}">编辑</view>
+        <view class="action-btn delete" catchtap="deleteDish" data-id="{{item._id}}" data-name="{{item.name}}">删除</view>
+      </view>
+    </view>
+    
+    <view class="empty" wx:if="{{dishes.length === 0 && !loading}}">
+      <text class="empty-text">暂无菜品</text>
+    </view>
+  </scroll-view>
+</view>

@@ -1,0 +1,37 @@
+<!--pages/refund-list/refund-list.wxml-->
+<view class="refund-list-page">
+  <!-- Loading -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+  
+  <!-- Content -->
+  <scroll-view 
+    wx:if="{{!loading}}"
+    class="refund-list" 
+    scroll-y 
+    refresher-enabled
+    refresher-triggered="{{refreshing}}"
+    bindrefresherrefresh="onRefresh"
+  >
+    <view class="refund-card" wx:for="{{refunds}}" wx:key="_id">
+      <view class="refund-header">
+        <text class="order-no">{{item.orderNo || '-'}}</text>
+        <view class="refund-status {{'status-' + item.status}}">
+          <text>{{statusText[item.status]}}</text>
+        </view>
+      </view>
+      <view class="refund-info">
+        <text class="refund-reason">{{item.reason || '退款申请'}}</text>
+        <text class="refund-amount">¥{{item.amount ? Number(item.amount).toFixed(2) : '0.00'}}</text>
+      </view>
+      <view class="refund-time">
+        <text>{{item.createTime || '-'}}</text>
+      </view>
+    </view>
+    
+    <view class="empty" wx:if="{{refunds.length === 0}}">
+      <text class="empty-text">暂无退款记录</text>
+    </view>
+  </scroll-view>
+</view>

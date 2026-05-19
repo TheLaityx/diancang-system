@@ -1,0 +1,66 @@
+<!--pages/order/order.wxml-->
+<view class="order-page">
+  <!-- Tab切换 -->
+  <view class="tabs">
+    <view class="tab-item {{currentTab === -1 ? 'active' : ''}}" bindtap="switchTab" data-status="-1">
+      <text class="tab-text">全部</text>
+    </view>
+    <view class="tab-item {{currentTab === 1 ? 'active' : ''}}" bindtap="switchTab" data-status="1">
+      <text class="tab-text">待接单</text>
+    </view>
+    <view class="tab-item {{currentTab === 2 ? 'active' : ''}}" bindtap="switchTab" data-status="2">
+      <text class="tab-text">制作中</text>
+    </view>
+    <view class="tab-item {{currentTab === 3 ? 'active' : ''}}" bindtap="switchTab" data-status="3">
+      <text class="tab-text">已完成</text>
+    </view>
+    <view class="tab-item {{currentTab === 5 ? 'active' : ''}}" bindtap="switchTab" data-status="5">
+      <text class="tab-text">退款</text>
+    </view>
+  </view>
+
+  <!-- 订单列表 -->
+  <scroll-view 
+    class="order-list" 
+    scroll-y 
+    refresher-enabled
+    refresher-triggered="{{refreshing}}"
+    bindrefresherrefresh="onRefresh"
+  >
+    <view class="order-card" wx:for="{{orders}}" wx:key="_id" bindtap="goToDetail" data-id="{{item._id}}">
+      <view class="order-header">
+        <view class="order-info">
+          <text class="take-no">订单号 {{item.orderNo || item.pickupNo || '--'}}</text>
+          <text class="table-no">桌号 {{item.tableNo || '-'}}</text>
+        </view>
+        <view class="order-status {{item.status == 5 ? 'status-refund' : 'status-' + item.status}}">
+          <text>{{statusText[item.status] || '未知'}}</text>
+        </view>
+      </view>
+      
+      <view class="order-items">
+        <view class="item-row" wx:for="{{item.items}}" wx:for-item="dish" wx:for-index="idx" wx:key="idx">
+          <text class="dish-name">{{dish.name || dish.dish_name}}</text>
+          <text class="dish-quantity">x{{dish.quantity}}</text>
+        </view>
+      </view>
+      
+      <view class="order-footer">
+        <text class="order-time">{{item.createTime || '-'}}</text>
+        <text class="order-total">¥{{item.totalAmountText || '0.00'}}</text>
+      </view>
+      
+      <!-- 待接单/制作中可以申请退款 -->
+      <view class="order-actions" wx:if="{{item.status === 1 || item.status === 2}}" catchtap="applyRefund" data-id="{{item._id}}">
+        <text class="refund-btn">申请退款</text>
+      </view>
+    </view>
+    
+    <view class="empty" wx:if="{{orders.length === 0 && !loading}}">
+      <text class="empty-text">暂无订单</text>
+    </view>
+    <view class="loading-state" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+  </scroll-view>
+</view>

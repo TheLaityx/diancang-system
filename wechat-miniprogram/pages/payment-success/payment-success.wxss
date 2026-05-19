@@ -1,0 +1,238 @@
+/* pages/payment-success/payment-success.wxss - 现代化支付成功页 */
+
+.success-page {
+  min-height: 100vh;
+  background: #F4F5F7;
+  padding: 0 14px 40px;
+}
+
+/* ===== 成功头部 ===== */
+.success-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 0 32px;
+}
+
+.success-icon-wrap {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #52C41A, #389E0D);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 24px rgba(82,196,26,0.35);
+}
+
+.success-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.success-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: #1A1A2E;
+}
+
+/* ===== 取餐信息卡 ===== */
+.take-info {
+  background: #fff;
+  border-radius: 18px;
+  padding: 24px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+.take-card {
+  text-align: center;
+  padding-bottom: 20px;
+  border-bottom: 1.5px dashed #E5E5E5;
+  margin-bottom: 16px;
+}
+
+.take-no-label {
+  font-size: 13px;
+  color: #bbb;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.take-no-value {
+  font-size: 52px;
+  font-weight: 900;
+  color: #C68D56;
+  letter-spacing: 6px;
+}
+
+.table-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.table-label {
+  font-size: 14px;
+  color: #bbb;
+}
+
+.table-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1A1A2E;
+}
+
+/* ===== 进度区 ===== */
+.progress-section {
+  background: #fff;
+  border-radius: 18px;
+  padding: 20px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #bbb;
+  margin-bottom: 20px;
+  letter-spacing: 0.5px;
+}
+
+.progress-card {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  flex: 1;
+}
+
+.step-dot {
+  width: 14px;
+  height: 14px;
+  background: #E5E5E5;
+  border-radius: 50%;
+  margin-bottom: 8px;
+  z-index: 1;
+}
+
+.progress-step.active .step-dot {
+  background: linear-gradient(135deg, #C68D56, #A97240);
+  box-shadow: 0 2px 8px rgba(198,141,86,0.45);
+}
+
+.step-line {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  width: 100%;
+  height: 2px;
+  background: #E5E5E5;
+}
+
+.progress-step.active .step-line {
+  background: linear-gradient(90deg, #C68D56, #E0C0A0);
+}
+
+.step-text {
+  font-size: 12px;
+  color: #bbb;
+  text-align: center;
+}
+
+.progress-step.active .step-text {
+  color: #C68D56;
+  font-weight: 600;
+}
+
+.progress-hint {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 13px;
+  color: #bbb;
+}
+
+/* ===== 操作按钮 ===== */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.action-btn {
+  width: 100%;
+  height: 52px;
+  border-radius: 26px;
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-btn.primary {
+  background: linear-gradient(135deg, #C68D56, #A97240);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(198,141,86,0.4);
+}
+
+.action-btn.secondary {
+  background: #fff;
+  color: #C68D56;
+  border: 1.5px solid #C68D56;
+}
+
+/* ===== 发票区 ===== */
+.invoice-section {
+  margin-bottom: 12px;
+}
+
+.invoice-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.invoice-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1A1A2E;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #F4F5F7;
+}
+
+.invoice-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.invoice-label {
+  font-size: 14px;
+  color: #999;
+}
+
+.invoice-value {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+.invoice-tip {
+  font-size: 12px;
+  color: #C68D56;
+  text-align: center;
+  margin-top: 12px;
+}
