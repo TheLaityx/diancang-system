@@ -1,7 +1,7 @@
 <template>
   <div class="login-wrap">
     <div class="login-box">
-      <div class="login-logo">🍽️</div>
+      <div class="login-logo">餐</div>
       <h2>点餐系统后台</h2>
       <el-form :model="form" @keyup.enter="doLogin">
         <el-form-item>
@@ -59,6 +59,17 @@ async function doLogin() {
   box-shadow: 0 8px 32px rgba(0,0,0,0.1);
   text-align: center;
 }
-.login-logo { font-size: 48px; margin-bottom: 8px; }
+.login-logo {
+  width: 64px;
+  height: 64px;
+  line-height: 64px;
+  margin: 0 auto 12px;
+  background: #C68D56;
+  color: #fff;
+  font-size: 28px;
+  font-weight: 600;
+  border-radius: 50%;
+  text-align: center;
+}
 h2 { color: #1a1a2e; margin-bottom: 32px; font-size: 22px; }
 </style>
