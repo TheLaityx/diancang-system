@@ -19,37 +19,51 @@
     </view>
     
     <view class="dish-info">
-      <text class="info-item">月售: {{dish.sales || 0}}</text>
-      <text class="info-item" wx:if="{{dish.stock !== -1}}">库存: {{dish.stock}}</text>
+      <text class="info-item">月售 {{dish.sales || 0}}</text>
+      <text class="info-item" wx:if="{{reviewSummary.total > 0}}">{{reviewSummary.avg_rating}}分 · {{reviewSummary.total}}条评价</text>
+      <text class="info-item" wx:else>暂无评价</text>
     </view>
   </view>
 
   <!-- 评价 section -->
   <view class="review-section" wx:if="{{reviews.length > 0 || canReview}}">
     <view class="review-header">
-      <text class="review-title">评价</text>
+      <text class="review-title">顾客评价</text>
+      <text class="review-count" wx:if="{{reviewSummary.total > 0}}">{{reviewSummary.total}}条</text>
     </view>
     <view class="review-list">
-      <view class="review-item" wx:for="{{reviews}}" wx:key="_id">
+      <view class="review-item" wx:for="{{reviews}}" wx:key="id">
         <view class="review-user">
-          <text class="review-user-name">{{item.userId}}</text>
-          <view class="review-rating">
-            <text wx:for="{{5}}" wx:for-item="star" wx:key="star" wx:for-index="i">★</text>
+          <view class="review-user-avatar">{{item.user_name ? item.user_name[0] : '匿'}}</view>
+          <view class="review-user-info">
+            <text class="review-user-name">{{item.user_name || '匿名用户'}}</text>
+            <view class="review-rating">
+              <text class="star-icon {{i < item.rating ? 'active' : ''}}" wx:for="{{5}}" wx:for-item="s" wx:key="i" wx:for-index="i">★</text>
+            </view>
           </view>
+          <text class="review-time">{{item.created_at}}</text>
         </view>
         <text class="review-content">{{item.content}}</text>
-        <text class="review-time">{{item.createTime}}</text>
+        <view class="review-reply" wx:if="{{item.reply}}">
+          <text class="reply-label">商家回复：</text>
+          <text class="reply-text">{{item.reply}}</text>
+        </view>
       </view>
     </view>
   </view>
 
-  <!-- 写评价按钮 -->
+  <!-- 写评价按钮（仅通过订单跳转进入时显示） -->
   <view class="review-btn-wrap" wx:if="{{canReview}}" bindtap="showReviewModal">
     <text class="review-btn-text">写评价</text>
   </view>
 
+  <!-- 已评价提示（提交后显示） -->
+  <view class="review-btn-wrap" wx:if="{{!canReview && hasUserReviewed}}">
+    <text class="review-btn-text reviewed">您已评价</text>
+  </view>
+
   <!-- 评价弹窗 -->
-  <view class="review-modal" wx:if="{{showReviewModal}}">
+  <view class="review-modal" wx:if="{{canReview && showReviewModal}}">
     <view class="review-modal-mask" bindtap="hideReviewModal"></view>
     <view class="review-modal-content">
       <view class="review-modal-header">
@@ -71,7 +85,8 @@
     </view>
   </view>
   
-  <view class="add-to-cart">
+  <!-- 底部操作栏：评价模式 / 查看已评价模式 隐藏购物车 -->
+  <view class="add-to-cart" wx:if="{{!canReview && !viewReview}}">
     <view class="quantity-wrap">
       <view class="quantity-btn" catchtap="decreaseQuantity">
         <text>-</text>
@@ -83,6 +98,21 @@
     </view>
     <view class="add-btn" bindtap="addToCart">
       <text class="btn-text">加入购物车 ¥{{totalPrice}}</text>
+    </view>
+  </view>
+  <!-- 写评价模式：返回按钮 -->
+  <view class="add-to-cart review-mode" wx:if="{{canReview}}">
+    <view class="add-btn back-btn" bindtap="backToOrder">
+      <text class="btn-text">返回订单</text>
+    </view>
+  </view>
+  <!-- 查看已评价模式：删除评价 + 返回按钮 -->
+  <view class="add-to-cart review-mode" wx:if="{{viewReview}}">
+    <view class="add-btn delete-btn" bindtap="deleteReview">
+      <text class="btn-text">删除评价</text>
+    </view>
+    <view class="add-btn back-btn" bindtap="backToOrder">
+      <text class="btn-text">返回订单</text>
     </view>
   </view>
 </view>

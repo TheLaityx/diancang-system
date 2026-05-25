@@ -220,6 +220,10 @@
   color: #fff;
 }
 
+.action-btn.primary.reviewed {
+  background: #52C41A;
+}
+
 .action-btn.secondary {
   background: #fff;
   color: #C68D56;

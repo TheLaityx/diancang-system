@@ -10,8 +10,8 @@ const routes = [
       { path: 'dashboard', component: () => import('../views/Dashboard.vue'), meta: { title: '数据概览' } },
       { path: 'orders', component: () => import('../views/Orders.vue'), meta: { title: '订单管理' } },
       { path: 'dishes', component: () => import('../views/Dishes.vue'), meta: { title: '菜品管理' } },
-      { path: 'restock', component: () => import('../views/Restock.vue'), meta: { title: '补货提醒' } },
       { path: 'users', component: () => import('../views/Users.vue'), meta: { title: '用户管理' } },
+      { path: 'reviews', component: () => import('../views/Reviews.vue'), meta: { title: '评论管理' } },
     ]
   }
 ]

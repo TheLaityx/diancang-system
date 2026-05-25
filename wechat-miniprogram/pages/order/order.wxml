@@ -54,6 +54,14 @@
       <view class="order-actions" wx:if="{{item.status === 1 || item.status === 2}}" catchtap="applyRefund" data-id="{{item._id}}">
         <text class="refund-btn">申请退款</text>
       </view>
+      <!-- 已完成且未评价 -->
+      <view class="order-actions" wx:if="{{item.status === 3 && !item.isReviewed}}" catchtap="goToReview" data-id="{{item._id}}">
+        <text class="review-btn">去评价</text>
+      </view>
+      <!-- 已完成且已评价 -->
+      <view class="order-actions" wx:if="{{item.status === 3 && item.isReviewed}}" catchtap="viewReview" data-id="{{item._id}}">
+        <text class="reviewed-btn">已评价</text>
+      </view>
     </view>
     
     <view class="empty" wx:if="{{orders.length === 0 && !loading}}">

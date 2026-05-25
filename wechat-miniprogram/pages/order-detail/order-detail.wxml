@@ -82,6 +82,12 @@
     <view class="action-btn primary" wx:if="{{order.status === 2}}" bindtap="applyRefund">
       申请退款
     </view>
+    <view class="action-btn primary" wx:if="{{order.status === 3 && !order.isReviewed}}" bindtap="goToReview">
+      去评价
+    </view>
+    <view class="action-btn primary reviewed" wx:if="{{order.status === 3 && order.isReviewed}}" bindtap="viewReview">
+      已评价
+    </view>
     <view class="action-btn secondary" bindtap="backToList">
       返回订单列表
     </view>

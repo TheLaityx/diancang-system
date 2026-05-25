@@ -106,12 +106,20 @@
 
 .review-header {
   margin-bottom: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .review-title {
   font-size: 16px;
   font-weight: 700;
   color: #1A1A2E;
+}
+
+.review-count {
+  font-size: 12px;
+  color: #999;
 }
 
 .review-list {
@@ -131,21 +139,45 @@
 
 .review-user {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 8px;
+  gap: 10px;
+}
+
+.review-user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #C68D56, #A97240);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.review-user-info {
+  flex: 1;
 }
 
 .review-user-name {
   font-size: 14px;
   color: #555;
   font-weight: 600;
+  display: block;
 }
 
 .review-rating {
-  color: #FAAD14;
-  font-size: 13px;
+  color: #E0E0E0;
+  font-size: 12px;
   letter-spacing: 1px;
+  margin-top: 2px;
+}
+
+.star-icon.active {
+  color: #FAAD14;
 }
 
 .review-content {
@@ -154,11 +186,34 @@
   line-height: 1.6;
   display: block;
   margin-bottom: 6px;
+  padding-left: 44px;
 }
 
 .review-time {
-  font-size: 12px;
+  font-size: 11px;
   color: #bbb;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.review-reply {
+  margin-left: 44px;
+  background: #F8F8FA;
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-top: 6px;
+}
+
+.reply-label {
+  font-size: 12px;
+  color: #C68D56;
+  font-weight: 600;
+}
+
+.reply-text {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.5;
 }
 
 .review-btn-wrap {
@@ -176,6 +231,11 @@
   background: rgba(198, 141, 86, 0.1);
   padding: 10px 0;
   border-radius: 12px;
+}
+
+.review-btn-text.reviewed {
+  color: #52C41A;
+  background: rgba(82, 196, 26, 0.1);
 }
 
 /* ===== 评价弹窗 ===== */
@@ -293,6 +353,24 @@
   padding-bottom: constant(safe-area-inset-bottom);
   padding-bottom: env(safe-area-inset-bottom);
   box-shadow: 0 -2px 16px rgba(0,0,0,0.08);
+}
+
+.add-to-cart.review-mode {
+  justify-content: center;
+}
+
+.add-to-cart.review-mode .add-btn {
+  flex: 1;
+}
+
+.back-btn {
+  background: linear-gradient(135deg, #E8C9A0, #D4A373) !important;
+  box-shadow: 0 4px 14px rgba(212,163,115,0.4) !important;
+}
+
+.delete-btn {
+  background: linear-gradient(135deg, #FF7875, #FF4D4F) !important;
+  box-shadow: 0 4px 14px rgba(255,77,79,0.4) !important;
 }
 
 .quantity-wrap {

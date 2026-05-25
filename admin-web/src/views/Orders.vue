@@ -247,7 +247,18 @@ function filterByStatus(status) {
 async function viewDetail(row) {
   try {
     const res = await orderApi.get(row.id)
-    currentOrder.value = res.data
+    const data = res.data
+    // 处理菜品图片路径：相对路径拼上后端 host，cloud:// 旧地址清空
+    if (data.items) {
+      data.items.forEach(item => {
+        if (item.image && item.image.startsWith('/')) {
+          item.image = 'http://localhost:3000' + item.image
+        } else if (item.image && item.image.indexOf('cloud://') === 0) {
+          item.image = ''
+        }
+      })
+    }
+    currentOrder.value = data
     detailVisible.value = true
   } catch (e) {
     ElMessage.error('获取详情失败')

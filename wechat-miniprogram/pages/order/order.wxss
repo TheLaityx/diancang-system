@@ -168,6 +168,24 @@
   border-radius: 10px;
 }
 
+.review-btn {
+  font-size: 13px;
+  color: #C68D56;
+  font-weight: 500;
+  background: rgba(198,141,86,0.10);
+  padding: 6px 14px;
+  border-radius: 10px;
+}
+
+.reviewed-btn {
+  font-size: 13px;
+  color: #52C41A;
+  font-weight: 500;
+  background: rgba(82,196,26,0.10);
+  padding: 6px 14px;
+  border-radius: 10px;
+}
+
 /* ===== 空状态 ===== */
 .empty {
   padding: 80px 0;

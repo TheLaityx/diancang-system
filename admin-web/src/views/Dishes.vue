@@ -45,11 +45,6 @@
         <template #default="{ row }">¥ {{ Number(row.price).toFixed(2) }}</template>
       </el-table-column>
       <el-table-column prop="sales" label="月售" width="80" align="center" />
-      <el-table-column prop="stock" label="库存" width="80" align="center">
-        <template #default="{ row }">
-          {{ row.stock === -1 ? '不限' : row.stock }}
-        </template>
-      </el-table-column>
       <el-table-column label="状态" width="90" align="center">
         <template #default="{ row }">
           <el-tag :type="row.status === 1 ? 'success' : 'info'" size="small">
@@ -96,11 +91,6 @@
 
         <el-form-item label="价格(元)" prop="price">
           <el-input-number v-model="form.price" :min="0" :step="0.5" :precision="2" style="width:100%" />
-        </el-form-item>
-
-        <el-form-item label="库存" prop="stock">
-          <el-input-number v-model="form.stock" :min="-1" style="width:100%" />
-          <div class="form-hint">-1 表示不限量</div>
         </el-form-item>
 
         <!-- 图片上传区域 -->
@@ -188,7 +178,7 @@ const dialogVisible = ref(false)
 const editId = ref(null)
 const formRef = ref(null)
 const form = reactive({
-  name: '', category_id: '', price: 0, stock: -1, description: '', status: 1, image: ''
+  name: '', category_id: '', price: 0, description: '', status: 1, image: ''
 })
 
 const rules = {
@@ -248,7 +238,7 @@ async function loadCategories() {
 // ---- 添加/编辑 ----
 function openAdd() {
   editId.value = null
-  Object.assign(form, { name: '', category_id: '', price: 0, stock: -1, description: '', status: 1, image: '' })
+  Object.assign(form, { name: '', category_id: '', price: 0, description: '', status: 1, image: '' })
   imgPreview.value = ''
   urlInput.value = ''
   imgMode.value = 'file'
@@ -261,7 +251,6 @@ function openEdit(row) {
     name: row.name,
     category_id: row.category_id,
     price: Number(row.price),
-    stock: row.stock ?? -1,
     description: row.description || '',
     status: row.status,
     image: row.image || ''

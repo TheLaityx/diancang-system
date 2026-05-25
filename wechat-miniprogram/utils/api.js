@@ -86,13 +86,38 @@ function getDishDetail(dishId) {
   return get(`/dishes/${dishId}`).then(data => ({ data: normalizeDish(data) }));
 }
 
-// 评价（暂不支持，返回空数据）
+// 评价
 function getDishReviews(dishId) {
-  return Promise.resolve({ data: [] });
+  // 需要返回完整响应（包含 data 和 summary），不能直接用 get()（get() 只返回 body.data）
+  return new Promise((resolve, reject) => {
+    wx.request({
+      url: BASE_URL + '/reviews',
+      method: 'GET',
+      data: { dish_id: dishId },
+      header: { 'Content-Type': 'application/json' },
+      success(res) {
+        const body = res.data;
+        if (body && body.code === 0) {
+          resolve(body);
+        } else {
+          reject(body?.msg || '请求失败');
+        }
+      },
+      fail(err) {
+        reject('网络错误');
+      }
+    });
+  });
 }
 
-function addReview(dishId, rating, content, userId) {
-  return Promise.resolve({ success: true });
+function addReview(dishId, rating, content, userId, userName) {
+  return post('/reviews', {
+    dish_id: dishId,
+    rating,
+    content,
+    user_id: userId,
+    user_name: userName
+  });
 }
 
 // ==================== 订单 ====================
@@ -152,6 +177,13 @@ function normalizeOrder(order) {
       const price = Number(i.price) || 0;
       const quantity = i.quantity || 1;
       const subtotal = i.subtotal != null ? Number(i.subtotal) : price * quantity;
+      // 处理图片路径：相对路径拼host，cloud://清空
+      let image = i.image || '';
+      if (image && image.startsWith('/')) {
+        image = IMG_HOST + image;
+      } else if (image && image.indexOf('cloud://') === 0) {
+        image = '';
+      }
       return {
         ...i,
         dishId: String(i.dish_id),
@@ -160,7 +192,8 @@ function normalizeOrder(order) {
         price,
         priceText: price.toFixed(2),
         subtotal,
-        subtotalText: subtotal.toFixed(2)
+        subtotalText: subtotal.toFixed(2),
+        image
       };
     })
   };

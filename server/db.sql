@@ -129,3 +129,24 @@ INSERT INTO order_items (order_id, dish_id, dish_name, price, quantity) VALUES
 (2, 11, '可口可乐', 6.00, 2),
 (3, 9, '白米饭', 3.00, 2),
 (3, 7, '番茄蛋汤', 15.00, 1);
+
+-- 评论表
+CREATE TABLE IF NOT EXISTS reviews (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  dish_id INT NOT NULL COMMENT '菜品ID',
+  user_id VARCHAR(100) COMMENT '用户标识（openid或user_id）',
+  user_name VARCHAR(100) DEFAULT '匿名用户' COMMENT '用户昵称',
+  rating INT NOT NULL COMMENT '评分 1-5',
+  content TEXT NOT NULL COMMENT '评论内容',
+  reply TEXT COMMENT '商家回复',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (dish_id) REFERENCES dishes(id) ON DELETE CASCADE
+) COMMENT='菜品评论';
+
+-- 测试评论数据
+INSERT INTO reviews (dish_id, user_id, user_name, rating, content, reply) VALUES
+(1, 'test_openid_001', '测试用户A', 5, '红烧肉太香了，软糯入味，强烈推荐！', '感谢您的好评，我们会继续保持！'),
+(1, 'test_openid_002', '测试用户B', 4, '味道不错，就是稍微偏甜了一点。', NULL),
+(3, 'test_openid_001', '测试用户A', 5, '宫保鸡丁花生很脆，鸡肉很嫩，满分！', NULL),
+(9, 'test_openid_002', '测试用户B', 5, '米饭很香，粒粒分明。', '谢谢夸奖，我们用的是东北五常大米。');

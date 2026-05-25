@@ -16,12 +16,8 @@
         <el-menu-item index="/dashboard"><el-icon><DataLine /></el-icon>数据概览</el-menu-item>
         <el-menu-item index="/orders"><el-icon><List /></el-icon>订单管理</el-menu-item>
         <el-menu-item index="/dishes"><el-icon><Food /></el-icon>菜品管理</el-menu-item>
-        <el-menu-item index="/restock">
-          <el-icon><Bell /></el-icon>
-          补货提醒
-          <el-badge v-if="restockCount > 0" :value="restockCount" style="margin-left:6px" />
-        </el-menu-item>
         <el-menu-item index="/users"><el-icon><User /></el-icon>用户管理</el-menu-item>
+        <el-menu-item index="/reviews"><el-icon><ChatDotRound /></el-icon>评论管理</el-menu-item>
       </el-menu>
     </el-aside>
 
@@ -42,26 +38,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { statsApi } from '../api'
 
 const router = useRouter()
 const username = localStorage.getItem('username') || 'admin'
-const restockCount = ref(0)
-
-async function loadRestockCount() {
-  try {
-    const res = await statsApi.restock()
-    restockCount.value = (res.data || []).filter(r => r.level === 'danger' || r.level === 'warning').length
-  } catch {}
-}
 
 function logout() {
   localStorage.removeItem('token')
   localStorage.removeItem('username')
   router.push('/login')
 }
-
-onMounted(loadRestockCount)
 </script>

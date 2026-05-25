@@ -22,6 +22,7 @@ app.use('/api/tables',     require('./routes/tables'));
 app.use('/api/users',      require('./routes/users'));
 app.use('/api/stats',      require('./routes/stats'));
 app.use('/api/upload',     require('./routes/upload'));
+app.use('/api/reviews',    require('./routes/reviews'));
 
 // 健康检查
 app.get('/', (req, res) => {

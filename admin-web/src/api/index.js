@@ -71,7 +71,7 @@ export const tableApi = {
 }
 
 export const uploadApi = {
-  // 上传图片文件，返回 { url } 
+  // 上传图片文件，返回 { url }
   image: (file) => {
     const form = new FormData()
     form.append('file', file)
@@ -79,4 +79,10 @@ export const uploadApi = {
       headers: { 'Content-Type': 'multipart/form-data' }
     })
   }
+}
+
+export const reviewApi = {
+  list: () => http.get('/reviews/all/list'),
+  reply: (id, reply) => http.put(`/reviews/${id}/reply`, { reply }),
+  remove: (id) => http.delete(`/reviews/${id}`)
 }

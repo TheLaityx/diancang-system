@@ -29,10 +29,14 @@ Page({
     try {
       const res = await getOrderDetail(id);
       const orderData = res.data;
-      
+
       if (orderData && orderData._id) {
         orderData.createTime = formatDate(orderData.createTime, 'YYYY-MM-DD HH:mm');
-        
+
+        // 检查该订单是否已评价
+        const reviewedOrders = wx.getStorageSync('reviewedOrders') || [];
+        orderData.isReviewed = reviewedOrders.includes(orderData._id);
+
         this.setData({ order: orderData });
       } else {
         wx.showToast({ title: '订单不存在', icon: 'none' });
@@ -48,6 +52,32 @@ Page({
     wx.navigateTo({
       url: `/pages/refund/refund?orderId=${orderId}`
     });
+  },
+
+  goToReview() {
+    const { order, orderId } = this.data;
+    const items = order.items || [];
+    if (items.length > 0) {
+      const firstDish = items[0];
+      wx.navigateTo({
+        url: `/pages/dish/dish?id=${firstDish.dishId}&canReview=1&orderId=${orderId}`
+      });
+    } else {
+      wx.showToast({ title: '订单中没有菜品', icon: 'none' });
+    }
+  },
+
+  viewReview() {
+    const { order, orderId } = this.data;
+    const items = order.items || [];
+    if (items.length > 0) {
+      const firstDish = items[0];
+      wx.navigateTo({
+        url: `/pages/dish/dish?id=${firstDish.dishId}&viewReview=1&orderId=${orderId}`
+      });
+    } else {
+      wx.showToast({ title: '订单中没有菜品', icon: 'none' });
+    }
   },
 
   backToList() {

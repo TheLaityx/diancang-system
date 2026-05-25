@@ -1,6 +1,6 @@
 // pages/order/order.js
 const app = getApp();
-const { getOrders } = require('../../utils/api');
+const { getOrders, getOrderDetail } = require('../../utils/api');
 const { formatDate } = require('../../utils/util');
 
 Page({
@@ -65,9 +65,11 @@ Page({
         res = await getOrders(userId, tab);
       }
       
+      const reviewedOrders = wx.getStorageSync('reviewedOrders') || [];
       const orders = (res.data || []).map(item => ({
         ...item,
-        createTime: formatDate(item.createTime, 'MM-DD HH:mm')
+        createTime: formatDate(item.createTime, 'MM-DD HH:mm'),
+        isReviewed: reviewedOrders.includes(item._id)
       }));
       
       this.setData({
@@ -106,6 +108,44 @@ Page({
     const id = e.currentTarget.dataset.id;
     wx.navigateTo({
       url: `/pages/refund/refund?orderId=${id}`
+    });
+  },
+
+  goToReview(e) {
+    const id = e.currentTarget.dataset.id;
+    // 先获取订单详情，拿到第一个菜品进行评价
+    getOrderDetail(id).then(res => {
+      const order = res.data;
+      const items = order.items || [];
+      if (items.length > 0) {
+        const firstDish = items[0];
+        wx.navigateTo({
+          url: `/pages/dish/dish?id=${firstDish.dishId}&canReview=1&orderId=${id}`
+        });
+      } else {
+        wx.showToast({ title: '订单中没有菜品', icon: 'none' });
+      }
+    }).catch(() => {
+      wx.showToast({ title: '加载订单失败', icon: 'none' });
+    });
+  },
+
+  viewReview(e) {
+    const id = e.currentTarget.dataset.id;
+    // 跳转到菜品详情页查看评价（viewReview=1 表示查看已评价模式，隐藏购物车）
+    getOrderDetail(id).then(res => {
+      const order = res.data;
+      const items = order.items || [];
+      if (items.length > 0) {
+        const firstDish = items[0];
+        wx.navigateTo({
+          url: `/pages/dish/dish?id=${firstDish.dishId}&viewReview=1&orderId=${id}`
+        });
+      } else {
+        wx.showToast({ title: '订单中没有菜品', icon: 'none' });
+      }
+    }).catch(() => {
+      wx.showToast({ title: '加载订单失败', icon: 'none' });
     });
   }
 });

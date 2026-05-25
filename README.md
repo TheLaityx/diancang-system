@@ -1,6 +1,6 @@
 # 扫码点餐系统（微信小程序 + 前后端分离）
 
-一个完整的扫码点餐系统，包含微信小程序客户端、Vue3 管理后台、Node.js + Express 服务端，前后端分离架构，支持桌位扫码点餐、订单管理、库存管理、数据统计等核心功能。
+一个完整的扫码点餐系统，包含微信小程序客户端、Vue3 管理后台、Node.js + Express 服务端，前后端分离架构，支持桌位扫码点餐、订单管理、评论评分、数据统计等核心功能。
 
 > 📖 **第一次运行？先看 [QUICKSTART.md](./QUICKSTART.md)** — 从零安装 MySQL 到跑通全套系统的完整教程。
 
@@ -10,9 +10,9 @@
 
 | 端 | 核心功能 |
 |---|---|
-| **微信小程序** | 扫码点餐、桌号选择、菜品分类浏览、购物车、在线支付模拟、订单查询、退款申请 |
-| **管理后台** | 数据统计看板、订单处理（接单/完成/退款）、菜品管理（增删改查/上下架/库存）、补货预警、桌位管理、用户管理 |
-| **服务端** | RESTful API、JWT 认证、MySQL 数据库、文件上传、库存扣减事务、分类/菜品/订单/桌位/用户/统计全模块接口 |
+| **微信小程序** | 扫码点餐、桌号选择、菜品分类浏览、购物车、在线支付模拟、订单查询、退款申请、菜品评分与评论 |
+| **管理后台** | 数据统计看板、订单处理（接单/完成/退款）、菜品管理（增删改查/上下架）、评论管理（查看/回复/删除）、桌位管理、用户管理 |
+| **服务端** | RESTful API、JWT 认证、MySQL 数据库、文件上传、分类/菜品/订单/评论/桌位/用户/统计全模块接口 |
 
 ---
 
@@ -43,7 +43,7 @@ diancang-system/
 │
 ├── admin-web/             # Vue3 管理后台
 │   ├── src/
-│   │   ├── views/         # 页面（Dashboard、Orders、Dishes、Restock、Users、Login）
+│   │   ├── views/         # 页面（Dashboard、Orders、Dishes、Reviews、Users、Login）
 │   │   ├── api.js         # 接口封装（axios）
 │   │   ├── router/        # 路由配置
 │   │   ├── stores/        # Pinia 状态管理
@@ -97,12 +97,7 @@ mysql -u root -p < db.sql
 # 方式二：图形化工具直接打开 db.sql 执行
 ```
 
-> 脚本会自动创建 `diancang` 数据库、所有数据表、分类、菜品、桌位、管理员账号及测试订单。
-
-**如果是已有数据库升级库存字段**，额外执行：
-```bash
-mysql -u root -p diancang < update_stock.sql
-```
+> 脚本会自动创建 `diancang` 数据库、所有数据表（含评论表 `reviews`）、分类、菜品、桌位、管理员账号及测试订单。
 
 ### 3. 启动后端服务
 
@@ -186,7 +181,8 @@ npm run dev
 | 认证 | `/api/auth` | POST /login（管理员登录） |
 | 分类 | `/api/categories` | GET /、POST /、PUT /:id、DELETE /:id |
 | 菜品 | `/api/dishes` | GET /（支持 keyword 搜索）、POST /、PUT /:id、DELETE /:id |
-| 订单 | `/api/orders` | GET /、POST /（创建并扣减库存）、PUT /:id/status、POST /:id/refund |
+| 订单 | `/api/orders` | GET /、POST /（创建订单）、PUT /:id/status、POST /:id/refund |
+| 评论 | `/api/reviews` | GET /（含平均分统计）、POST /（提交评论）、POST /delete-self（删除自己的评论）、PUT /:id/reply（商家回复）、DELETE /:id（商家删除） |
 | 桌位 | `/api/tables` | GET /、POST /、PUT /:id、DELETE /:id |
 | 用户 | `/api/users` | GET / |
 | 统计 | `/api/stats` | GET /dashboard（数据看板） |
@@ -196,13 +192,12 @@ npm run dev
 
 ---
 
-## 库存管理说明
+## 评论系统说明
 
-- 菜品表 `dishes.stock` 字段表示库存：
-  - `stock = -1` 表示不限量
-  - `stock >= 0` 表示实际库存，下单时会原子性检查并扣减
-- 管理后台「补货管理」页面会预警库存 <= 10 的菜品
-- 初始数据中的库存已按菜品销量合理分配（热销品 60~100，普通品 30~55）
+- 订单完成后，用户在小程序「订单」页面可点击「去评价」进入菜品详情页进行评分（1-5 星）和文字评论
+- 普通浏览模式下仅可查看他人评价，不能写评论
+- 已评价的订单显示「已评价」按钮，可查看自己的评价并支持删除
+- 管理后台「评论管理」页面可查看所有评论，支持商家回复和删除操作
 
 ---
 
